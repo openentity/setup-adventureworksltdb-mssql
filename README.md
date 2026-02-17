@@ -1,4 +1,4 @@
-# Setup MSSQL Action
+# Setup MSSQL AdventureWorksLT Database Action
 
 This GitHub action automatically installs a SQL server and `adventureworkslt` database on Windows for testing.
 
