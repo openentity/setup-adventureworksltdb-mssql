@@ -26,10 +26,10 @@ runs:
         $backupFile = "${{ github.action_path }}/mssql${{ inputs.version }}/adventureworkslt.bak"
         echo "Restoring database from $backupFile..."
 
-        $serverFolder = "C:\Program Files\Microsoft SQL Server\MSSQL16.SQLEXPRESS\MSSQL\DATA"
         $db = "AdventureWorksLT${{ inputs.version }}"
-        $mdf = "${{ variables.serverFolder }}\AdventureWorksLT_Data.mdf"}}"
-        $ldf = "${{ variables.serverFolder }}\AdventureWorksLT_Log.ldf"}}"
+        $serverFolder = "C:\Program Files\Microsoft SQL Server\MSSQL16.SQLEXPRESS\MSSQL\DATA"
+        $mdf = "${{ variables.serverFolder }}\AdventureWorksLT_Data.mdf"
+        $ldf = "${{ variables.serverFolder }}\AdventureWorksLT_Log.ldf"
 
         sqlcmd -S localhost -d master -C  -U sa -P "${{ inputs.sa-password }}" -Q "RESTORE DATABASE [AdventureWorksLT] FROM DISK = '$backupFile' WITH MOVE '${{ variables.db }}_Data' TO '${{ variables.mdf }}', MOVE '${{ variables.db }}_log' TO '${{ variables.ldf }}'"
 
