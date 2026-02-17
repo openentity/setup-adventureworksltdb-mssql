@@ -25,5 +25,7 @@ runs:
       run: |
         $backupFile = "${{ github.action_path }}/mssql${{ inputs.version }}/adventureworkslt.bak"
         echo "Restoring database from $backupFile..."
-        sqlcmd -S localhost -U sa -P "${{ inputs.sa-password }}" -C -d master -Q "RESTORE DATABASE [AdventureWorksLT] FROM DISK = '$backupFile'"
+
+        sqlcmd -S localhost -U sa -P "${{ inputs.sa-password }}" -C -d master -Q "RESTORE DATABASE [AdventureWorksLT] FROM DISK = '$backupFile' WITH MOVE 'AdventureWorksLT${{ inputs.version }}_Data' TO 'AdventureWorksLT_Data.mdf', MOVE 'AdventureWorksLT${{ inputs.version }}_log' TO 'AdventureWorksLT_Log.ldf'"
+
         echo "Done installing AdventureWorksLT database."
