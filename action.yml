@@ -6,6 +6,11 @@ inputs:
   sa-password:
     description: "The SA password for the SQL instance"
     required: true
+  version:
+    description: "The version of SQL Server to use (2022)"
+    required: false
+    default: "2022"
+
 runs:
   using: "composite"
   steps:
@@ -19,14 +24,13 @@ runs:
 
     - shell: pwsh
       run: |
-        $version = "2022"
-        $mssqlVersion = "16"
+        $version = "16"
 
-        $backupFile = "${{ github.action_path }}/mssql${{ variables.version }}/adventureworkslt.bak"
+        $backupFile = "${{ github.action_path }}/mssql${{ inputs.version }}/adventureworkslt.bak"
         echo "Restoring database from $backupFile..."
 
-        $db = "AdventureWorksLT${{ variables.version }}"
-        $serverFolder = "C:\Program Files\Microsoft SQL Server\MSSQL${{ variables.mssqlVersion }}.SQLEXPRESS\MSSQL\DATA"
+        $db = "AdventureWorksLT${{ inputs.version }}"
+        $serverFolder = "C:\Program Files\Microsoft SQL Server\MSSQL${{ variables.version }}.SQLEXPRESS\MSSQL\DATA"
         $mdf = "${{ variables.serverFolder }}\AdventureWorksLT_Data.mdf"
         $ldf = "${{ variables.serverFolder }}\AdventureWorksLT_Log.ldf"
 
