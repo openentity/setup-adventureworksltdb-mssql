@@ -35,11 +35,6 @@ runs:
         $mdf = "$serverFolder\AdventureWorksLT_Data.mdf"
         $ldf = "$serverFolder\AdventureWorksLT_Log.ldf"
 
-        echo "dbData is '$dbData'"
-        echo "dbLog is '$dbLog'"
-        echo "mdf is '$mdf'"
-        echo "ldf is '$ldf'"
-
         sqlcmd -S localhost -d master -C  -U sa -P "${{ inputs.sa-password }}" -Q "RESTORE DATABASE [AdventureWorksLT] FROM DISK = '$backupFile' WITH MOVE '$dbData' TO '$mdf', MOVE '$dbLog' TO '$ldf'"
 
         echo "Done installing AdventureWorksLT database."
