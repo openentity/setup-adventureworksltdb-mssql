@@ -23,7 +23,7 @@ runs:
 
     - shell: pwsh
       run: |
-        echo "Installing AdventureWorksLT database..."
-        Set-Location ${{ github.action_path }}/mssql${{ inputs.version }}
-        sqlcmd -S localhost -U sa -P "${{ inputs.sa-password }}" -C -d master -i install.sql
+        $backupFile = "${{ github.action_path }}/mssql${{ inputs.version }}/adventureworkslt.bak"
+        echo "Restoring database from $backupFile..."
+        sqlcmd -S localhost -U sa -P "${{ inputs.sa-password }}" -C -d master -Q "RESTORE DATABASE [AdventureWorksLT] FROM DISK = '$backupFile'"
         echo "Done installing AdventureWorksLT database."
