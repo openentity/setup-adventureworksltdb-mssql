@@ -30,10 +30,17 @@ runs:
         echo "Restoring database from $backupFile..."
 
         $db = "AdventureWorksLT${{ inputs.version }}"
-        $serverFolder = "C:\Program Files\Microsoft SQL Server\MSSQL${{ variables.version }}.SQLEXPRESS\MSSQL\DATA"
-        $mdf = "${{ variables.serverFolder }}\AdventureWorksLT_Data.mdf"
-        $ldf = "${{ variables.serverFolder }}\AdventureWorksLT_Log.ldf"
+        $dbData = "$db_Data"
+        $dbLog = "$db_log"
+        $serverFolder = "C:\Program Files\Microsoft SQL Server\MSSQL$version.SQLEXPRESS\MSSQL\DATA"
+        $mdf = "$serverFolder\AdventureWorksLT_Data.mdf"
+        $ldf = "$serverFolder\AdventureWorksLT_Log.ldf"
 
-        sqlcmd -S localhost -d master -C  -U sa -P "${{ inputs.sa-password }}" -Q "RESTORE DATABASE [AdventureWorksLT] FROM DISK = '$backupFile' WITH MOVE '${{ variables.db }}_Data' TO '${{ variables.mdf }}', MOVE '${{ variables.db }}_log' TO '${{ variables.ldf }}'"
+        echo dbData = "$dbData"
+        echo dbLog = "$dbLog"
+        echo mdf = "$mdf"
+        echo ldf = "$ldf"
+
+        sqlcmd -S localhost -d master -C  -U sa -P "${{ inputs.sa-password }}" -Q "RESTORE DATABASE [AdventureWorksLT] FROM DISK = '$backupFile' WITH MOVE '$dbData' TO '$mdf', MOVE '$dbLog' TO '$ldf'"
 
         echo "Done installing AdventureWorksLT database."
