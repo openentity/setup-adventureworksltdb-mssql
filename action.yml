@@ -1,0 +1,29 @@
+name: "Setup MSSQL AdventureWorksLT Database"
+branding:
+  icon: "database"
+  color: "yellow"
+inputs:
+  sa-password:
+    description: "The SA password for the SQL instance"
+    required: true
+  version:
+    description: "The version of the SQL instance"
+    required: false
+    default: "2022"
+runs:
+  using: "composite"
+  steps:
+
+    - name: Setup MSSQL
+      uses: openentity/setup-mssql@v1
+      with:
+          components: sqlcmd,sqlengine
+          sa-password: "${{ inputs.sa-password }}"
+          version: "${{ inputs.version }}"
+
+    - shell: pwsh
+      run: |
+        echo "Installing AdventureWorksLT database..."
+        Set-Location ${{ github.action_path }}/mssql${{ inputs.version }}
+        sqlcmd -S localhost -U sa -P "${{ inputs.sa-password }}" -C -d master -i install.sql
+        echo "Done installing AdventureWorksLT database."
